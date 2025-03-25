@@ -173,6 +173,7 @@
                   window.location.href = "main.html";
                 }, 2000);
               } else {
+                loading.classList.add("d-none");
                 toastMessage.innerText = "Username atau password salah!";
                 toastEl.classList.remove("bg-success");
                 toastEl.classList.add("bg-danger");
