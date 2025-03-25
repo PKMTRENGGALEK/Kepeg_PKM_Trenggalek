@@ -173,6 +173,9 @@
     </div>
 
     <script>
+       if (!localStorage.getItem("username")) {
+    window.location.href = "login.html";
+  }
       document.addEventListener("DOMContentLoaded", function () {
         const nama = localStorage.getItem("nama");
         // const foto = localStorage.getItem("foto") || "";
