@@ -1,0 +1,209 @@
+<div class="cardku">
+  <div class="container mt-2">
+    <h2 class="mb-4 text-white">Form Cuti Pegawai</h2>
+    <!-- <button id="logoutBtn" class="btn btn-danger">Logout</button> -->
+    <form id="cutiForm">
+      <div class="mb-3">
+        <label for="tanggal" class="form-label text-white">Tanggal</label>
+        <input type="date" class="form-control" id="tanggal" readonly />
+      </div>
+      <div class="mb-3">
+        <label for="nama" class="form-label text-white">Nama</label>
+        <input
+          type="text"
+          class="form-control"
+          id="nama"
+          name="nama"
+          placeholder="Masukkan Nama"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label for="nip" class="form-label text-white">NIP</label>
+        <input
+          type="text"
+          class="form-control"
+          id="nip"
+          name="nip"
+          placeholder="Masukkan NIP"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label for="tanggal_awal" class="form-label text-white"
+          >Tanggal Cuti Awal</label
+        >
+        <input
+          type="text"
+          class="form-control datepicker"
+          id="tanggal_awal"
+          name="tanggal_awal"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label for="tanggal_akhir" class="form-label text-white"
+          >Tanggal Cuti Akhir</label
+        >
+        <input
+          type="text"
+          class="form-control datepicker"
+          id="tanggal_akhir"
+          name="tanggal_akhir"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label for="lama_cuti" class="form-label text-white"
+          >Lama Cuti (hari)</label
+        >
+        <input
+          type="text"
+          class="form-control"
+          id="lama_cuti"
+          name="lama_cuti"
+          readonly
+        />
+      </div>
+      <div class="mb-3">
+        <label for="keterangan" class="form-label text-white"
+          >Keterangan Cuti</label
+        >
+        <textarea
+          class="form-control"
+          id="keterangan"
+          name="keterangan"
+          rows="3"
+          placeholder="Masukkan keterangan cuti"
+        ></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  if (!localStorage.getItem("username")) {
+    window.location.href = "index.html";
+  }
+
+  document.getElementById("nama").value = localStorage.getItem("nama") || "";
+  document.getElementById("nip").value = localStorage.getItem("nip") || "";
+
+  flatpickr(".datepicker", {
+    dateFormat: "Y-m-d",
+    disableMobile: true,
+  });
+
+  document.getElementById("tanggal").value = new Date()
+    .toISOString()
+    .split("T")[0];
+
+  const tanggalAwalInput = document.getElementById("tanggal_awal");
+  const tanggalAkhirInput = document.getElementById("tanggal_akhir");
+  const lamaCutiInput = document.getElementById("lama_cuti");
+  const tanggalMerah = ["2025-01-01", "2025-04-10", "2025-05-01"];
+
+  function hitungLamaCuti() {
+    const start = new Date(tanggalAwalInput.value);
+    const end = new Date(tanggalAkhirInput.value);
+    let count = 0;
+
+    if (start && end && start <= end) {
+      let currentDate = new Date(start);
+      while (currentDate <= end) {
+        if (
+          currentDate.getDay() !== 0 &&
+          !tanggalMerah.includes(currentDate.toISOString().split("T")[0])
+        ) {
+          count++;
+        }
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+    }
+    lamaCutiInput.value = count;
+  }
+
+  tanggalAwalInput.addEventListener("change", hitungLamaCuti);
+  tanggalAkhirInput.addEventListener("change", hitungLamaCuti);
+
+  document
+    .getElementById("cutiForm")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      let nama = document.getElementById("nama").value.trim();
+      let nip = document.getElementById("nip").value.trim();
+      let tanggal_awal = tanggalAwalInput.value;
+      let tanggal_akhir = tanggalAkhirInput.value;
+      let keterangan = document.getElementById("keterangan").value.trim();
+      let lama_cuti = lamaCutiInput.value.trim();
+
+      console.log("Nama:", nama);
+      console.log("NIP:", nip);
+      console.log("Tanggal Awal:", tanggal_awal);
+      console.log("Tanggal Akhir:", tanggal_akhir);
+      console.log("Keterangan:", keterangan);
+      console.log("Lama Cuti:", lama_cuti);
+
+      if (
+        !nama ||
+        !nip ||
+        !tanggal_awal ||
+        !tanggal_akhir ||
+        !keterangan ||
+        !lama_cuti
+      ) {
+        Swal.fire("Oops...", "Semua kolom harus diisi!", "warning");
+        return;
+      }
+
+      Swal.fire({
+        title: "Mengirim Data...",
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
+      fetch(
+        "https://script.google.com/macros/s/AKfycbz8-nYf_varVN74sug2MqtwFuu2gnPzMYR7DuGfvl44gcgV-PCZtMRLSUB4HD4UktrTiA/exec",
+        {
+          method: "POST",
+          body: new FormData(document.getElementById("cutiForm")),
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          Swal.close();
+          console.log("Response dari Server:", data);
+          if (data.status === "success") {
+            Swal.fire("Berhasil!", "Data berhasil dikirim!", "success").then(
+              () => {
+                document.getElementById("tanggal_awal").value = "";
+                document.getElementById("tanggal_akhir").value = "";
+                document.getElementById("keterangan").value = "";
+                document.getElementById("lama_cuti").value = "";
+
+                // Nama, NIP, dan Tanggal Tetap Ada
+                document.getElementById("nama").value = nama;
+                document.getElementById("nip").value = nip;
+                document.getElementById("tanggal").value = new Date()
+                  .toISOString()
+                  .split("T")[0];
+              }
+            );
+          } else {
+            Swal.fire("Gagal!", "Terjadi kesalahan: " + data.message, "error");
+          }
+        })
+        .catch((error) => {
+          console.error("Error Fetch:", error);
+          Swal.fire("Kesalahan!", "Gagal mengirim data.", "error");
+        });
+    });
+
+  document.getElementById("logoutBtn").addEventListener("click", function () {
+    localStorage.removeItem("username");
+    window.location.href = "index.html";
+  });
+</script>
