@@ -1,3 +1,0 @@
-RewriteEngine On
-RewriteCond %{REQUEST_URI} !^/login.html$ [NC]
-RewriteRule ^$ /login.html [L,R=302]
