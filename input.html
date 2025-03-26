@@ -1,9 +1,98 @@
-<div class="cardku">
-  <div class="container mt-2">
+<div class="cardku mb-2">
+  <div class="container mt-2"><br>
     <h2 class="mb-4 text-white">Form Cuti Pegawai</h2>
-    <!-- <button id="logoutBtn" class="btn btn-danger">Logout</button> -->
+    <hr class="text-white">
     <form id="cutiForm">
-      <div class="mb-3">
+      <div class="row">
+        <div class="col">
+          <label for="tanggal" class="form-label text-white">Tanggal</label>
+          <input type="date" class="form-control" id="tanggal" readonly />
+        </div>
+        <div class="col">
+          <label for="nama" class="form-label text-white">Nama</label>
+        <input
+          type="text"
+          class="form-control"
+          id="nama"
+          name="nama"
+          placeholder="Masukkan Nama"
+          required
+        />
+        </div>
+        <div class="col">
+             <label for="nip" class="form-label text-white">NIP</label>
+        <input
+          type="text"
+          class="form-control"
+          id="nip"
+          name="nip"
+          placeholder="Masukkan NIP"
+          required
+        />
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col">
+          <label  class="form-label text-white">Jenis Cuti</label>
+          <select class="form-select">
+            <option value="">-- Pilih Jenis Cuti --</option>
+            <option value="Cuti Tahunan">Cuti Tahunan</option>
+            <option value="Cuti Sakit">Cuti Sakit</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+             <label for="tanggal_awal" class="form-label text-white"
+          >Tanggal Cuti Awal</label
+        >
+        <input
+          type="text"
+          class="form-control datepicker"
+          id="tanggal_awal"
+          name="tanggal_awal"
+          required
+        />
+        </div>
+        <div class="col-md-3">
+             <label for="tanggal_akhir" class="form-label text-white"
+          >Tanggal Cuti Akhir</label
+        >
+        <input
+          type="text"
+          class="form-control datepicker"
+          id="tanggal_akhir"
+          name="tanggal_akhir"
+          required
+          placeholder="dd-mm-yyyy"
+        />
+        </div>
+        <div class="col-md-2">
+            <label for="lama_cuti" class="form-label text-white"
+                >Lama Cuti (hari)</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="lama_cuti"
+                name="lama_cuti"
+                readonly
+              />
+              </div>
+      </div>
+      <div class="row">
+        <div class="col">
+           <label for="keterangan" class="form-label text-white"
+              >Keterangan Cuti</label
+            >
+            <textarea
+              class="form-control"
+              id="keterangan"
+              name="keterangan"
+              rows="3"
+              placeholder="Masukkan keterangan cuti"
+            ></textarea>
+        </div>
+      </div>
+     <!--  <div class="mb-3">
         <label for="tanggal" class="form-label text-white">Tanggal</label>
         <input type="date" class="form-control" id="tanggal" readonly />
       </div>
@@ -76,8 +165,13 @@
           rows="3"
           placeholder="Masukkan keterangan cuti"
         ></textarea>
+      </div> -->
+      <div class="row mt-3">
+        <div class="col">
+          <button type="submit" class="btn btn-primary shadow">Submit</button>
+        </div>
       </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <br>
     </form>
   </div>
 </div>
