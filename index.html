@@ -164,16 +164,17 @@
                 localStorage.setItem("username", data.username);
                 localStorage.setItem("nama", data.nama);
                 localStorage.setItem("nip", data.nip);
+                localStorage.setItem("jabatan", data.jabatan);
 
                 console.log("Data tersimpan di localStorage:");
                 console.log("Nama:", localStorage.getItem("nama"));
                 console.log("NIP:", localStorage.getItem("nip"));
+                console.log("Jabatan:", localStorage.getItem("jabatan"));
                 // Redirect ke halaman index.html setelah 2 detik
                 setTimeout(() => {
                   window.location.href = "main.html";
                 }, 2000);
               } else {
-                loading.classList.add("d-none");
                 toastMessage.innerText = "Username atau password salah!";
                 toastEl.classList.remove("bg-success");
                 toastEl.classList.add("bg-danger");
