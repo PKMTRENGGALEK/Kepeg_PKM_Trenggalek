@@ -1,0 +1,75 @@
+<div class="cardbaru p-4 text-center shadow-lg rounded">
+  <div class="container">
+    <!-- Foto Profil -->
+    <img
+      src="nurseman.png"
+      alt="Foto Profil"
+      id="userPhoto"
+      class="rounded-circle mt-2 border border-2"
+      width="120"
+      height="120"
+      style="object-fit: cover"
+    />
+
+    <!-- Upload Foto -->
+    <div class="col-md-6 mx-auto mt-3">
+      <label for="foto" class="form-label text-white fw-bold"
+        >Upload Foto</label
+      >
+      <input
+        type="file"
+        class="form-control custom-file-input"
+        id="foto"
+        name="foto"
+        accept="image/*"
+      />
+    </div>
+
+    <!-- Nama & Jabatan -->
+    <h5 class="mt-3 text-white fw-bold" id="Namapegawai">Nama Pengguna</h5>
+    <h6 id="userRole" class="text-white fst-italic">UI/UX Designer</h6>
+
+    <!-- Tombol Aksi -->
+    <div class="d-flex justify-content-center gap-3 mt-3">
+      <button class="btn btn-outline-light px-4">Message</button>
+      <button class="btn btn-primary px-4">Contact</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Styling Card */
+  .cardbaru {
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 12px;
+    padding: 20px;
+    width: 550px;
+    margin: auto;
+  }
+
+  /* Styling Input File */
+  .custom-file-input {
+    width: 100%;
+    padding: 6px;
+    font-size: 14px;
+  }
+
+  /* Foto Profil */
+  #userPhoto {
+    border: 3px solid white;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  }
+</style>
+
+<script>
+  // Redirect jika tidak ada username
+  if (!localStorage.getItem("username")) {
+    window.location.href = "index.html";
+  }
+
+  // Mengisi nama dan jabatan dari localStorage
+  document.getElementById("Namapegawai").innerText =
+    localStorage.getItem("nama") || "Nama Pengguna";
+  document.getElementById("userRole").innerText =
+    localStorage.getItem("jabatan") || "UI/UX Designer";
+</script>
