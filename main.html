@@ -23,7 +23,6 @@
         height: 100vh;
         display: flex;
         overflow-x: hidden;
-
       }
       html {
         height: 100%;
@@ -80,7 +79,6 @@
         margin-left: 270px;
         /*padding: 20px;*/
         width: 100%;
-       
       }
       .navbar {
         position: fixed;
@@ -101,27 +99,27 @@
         object-fit: cover;
       }
       /* Responsive */
-@media (max-width: 768px) {
-  .sidebar {
-    left: -250px;
-    transition: left 0.3s ease-in-out;
-  }
+      @media (max-width: 768px) {
+        .sidebar {
+          left: -250px;
+          transition: left 0.3s ease-in-out;
+        }
 
-  .sidebar.open {
-    left: 0;
-  }
+        .sidebar.open {
+          left: 0;
+        }
 
-  .navbar {
-    left: 0;
-    width: 100%;
-  }
+        .navbar {
+          left: 0;
+          width: 100%;
+        }
 
-  .content {
-    margin-left: 0;
-    width: 100%;
-    padding-top: 80px;
-  }
-}
+        .content {
+          margin-left: 0;
+          width: 100%;
+          padding-top: 80px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -246,22 +244,42 @@
           .then((html) => {
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, "text/html");
-            const newContent = doc.body.innerHTML;
-            document.getElementById("mainContent").innerHTML = newContent;
 
-            // Mengeksekusi semua script dari halaman yang dimuat
-            const scripts = doc.querySelectorAll("script");
-            scripts.forEach((oldScript) => {
+            const newContent = doc.body.innerHTML;
+            const mainContent = document.getElementById("mainContent");
+
+            if (!mainContent) {
+              console.error("Elemen #mainContent tidak ditemukan!");
+              return;
+            }
+
+            // Mengganti konten
+            mainContent.innerHTML = newContent;
+
+            // Menghapus script lama agar tidak duplikasi
+            document
+              .querySelectorAll("script.dynamic-script")
+              .forEach((s) => s.remove());
+
+            // Mengeksekusi ulang semua script dari halaman yang dimuat
+            doc.querySelectorAll("script").forEach((oldScript) => {
               const newScript = document.createElement("script");
+              newScript.classList.add("dynamic-script"); // Tambahkan class untuk mengidentifikasi
               if (oldScript.src) {
                 newScript.src = oldScript.src;
+                newScript.async = true;
               } else {
                 newScript.textContent = oldScript.textContent;
               }
               document.body.appendChild(newScript);
             });
+
+            console.log(`Halaman ${page} berhasil dimuat.`);
           })
-          .catch((error) => console.error("Error loading page:", error));
+          .catch((error) => {
+            console.error("Error loading page:", error);
+            alert("Gagal memuat halaman, coba lagi.");
+          });
       }
     </script>
   </body>
